@@ -2,13 +2,14 @@
 
 namespace TraderInteractive\NetAcuity\Tests;
 
+use PHPUnit\Framework\TestCase;
 use TraderInteractive\NetAcuity\NetAcuity;
 
 /**
  * @coversDefaultClass \TraderInteractive\NetAcuity\NetAcuity
  * @covers ::__construct
  */
-final class NetAcuityTest extends NetAcuityTestSuite
+final class NetAcuityTest extends TestCase
 {
     /**
      * @test

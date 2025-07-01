@@ -151,12 +151,12 @@ final class AbstractNetAcuityDatabaseTest extends NetAcuityTestSuite
      *
      * @test
      * @covers ::fetch
-     * @expectedException Exception
-     * @expectedExceptionMessage NetAcuity API rejected the request, Reason: Invalid IP (1)
-     * @expectedExceptionCode 400
      */
     public function getGeoNonStringIp()
     {
+        $this->expectExceptionMessage('NetAcuity API rejected the request, Reason: Invalid IP (1)');
+        $this->expectExceptionCode(400);
+
         $mockException = $this->getMockClientException(400, 'Invalid IP (1)');
         $mockClient = $this->getMockGuzzleClient();
         $mockClient->method('send')->will($this->throwException($mockException));
@@ -167,15 +167,13 @@ final class AbstractNetAcuityDatabaseTest extends NetAcuityTestSuite
 
     /**
      * @test
-     *
      * @covers ::fetch
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage NetAcuity API rejected the provided api user token.
-     * @expectedExceptionCode 403
      */
     public function netAcuityUserTokenInvalid()
     {
+        $this->expectExceptionMessage('NetAcuity API rejected the provided api user token.');
+        $this->expectExceptionCode(403);
+
         $mockException = $this->getMockClientException(403, 'Invalid IP (1)');
         $mockClient = $this->getMockGuzzleClient();
         $mockClient->method('send')->will($this->throwException($mockException));
