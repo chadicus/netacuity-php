@@ -58,7 +58,7 @@ final class NetAcuity implements NetAcuityInterface
      *     @type string $timezone-name
      * }
      */
-    public function getGeo(string $ip) : array
+    public function getGeo(string $ip): array
     {
         return $this->database->fetch($ip);
     }

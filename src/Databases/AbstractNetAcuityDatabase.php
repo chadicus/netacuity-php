@@ -115,7 +115,7 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
      *
      * @return string The formatted url query string.
      */
-    protected function buildQuery(string $userToken, string $ip) : string
+    protected function buildQuery(string $userToken, string $ip): string
     {
         $baseUrl = 'https://usa.cloud.netacuity.com/webservice/query';
         return "{$baseUrl}?u={$userToken}&dbs={$this->databaseIdentifier}&ip={$ip}&json=true";

@@ -9,16 +9,16 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class NetAcuityTestSuite extends TestCase
 {
-    protected function getMockGuzzleClient() : ClientInterface
+    protected function getMockGuzzleClient(): ClientInterface
     {
         return $this->getMockBuilder(
             '\GuzzleHttp\Client'
         )->disableOriginalConstructor()->setMethods(['send'])->getMock();
     }
 
-    protected function getMockClientException(int $code, string $errorMessage) : ClientException
+    protected function getMockClientException(int $code, string $errorMessage): ClientException
     {
-        $mockStream =$this->getMockBuilder(
+        $mockStream = $this->getMockBuilder(
             '\GuzzleHttp\Psr7\Stream'
         )->disableOriginalConstructor()->setMethods(['getContents'])->getMock();
         $mockStream->method(
@@ -39,7 +39,7 @@ abstract class NetAcuityTestSuite extends TestCase
         return $mockException;
     }
 
-    protected function getMockResponse(array $response) : ResponseInterface
+    protected function getMockResponse(array $response): ResponseInterface
     {
         $mockStream = $this->getMockBuilder(
             '\GuzzleHttp\Psr7\Stream'

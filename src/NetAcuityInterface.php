@@ -39,5 +39,5 @@ interface NetAcuityInterface
      *     @type string $timezone-name
      * }
      */
-    public function getGeo(string $ip) : array;
+    public function getGeo(string $ip): array;
 }
