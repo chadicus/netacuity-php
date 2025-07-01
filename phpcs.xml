@@ -4,5 +4,5 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <arg name="colors" />
     <arg value="p" />
-    <rule ref="PSR2" />
+    <rule ref="PSR12" />
 </ruleset>

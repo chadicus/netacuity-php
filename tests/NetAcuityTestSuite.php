@@ -4,53 +4,28 @@ namespace TraderInteractive\NetAcuity\Tests;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class NetAcuityTestSuite extends TestCase
 {
-    protected function getMockGuzzleClient() : ClientInterface
+    protected function getMockGuzzleClient(): ClientInterface
     {
-        return $this->getMockBuilder(
-            '\GuzzleHttp\Client'
-        )->disableOriginalConstructor()->setMethods(['send'])->getMock();
+        return $this->getMockBuilder(ClientInterface::class)->getMock();
     }
 
-    protected function getMockClientException(int $code, string $errorMessage) : ClientException
+    protected function getMockClientException(int $code, string $errorMessage): ClientException
     {
-        $mockStream =$this->getMockBuilder(
-            '\GuzzleHttp\Psr7\Stream'
-        )->disableOriginalConstructor()->setMethods(['getContents'])->getMock();
-        $mockStream->method(
-            'getContents'
-        )->willReturn(json_encode(['error' => ['message' => $errorMessage]]));
-
-        $mockResponse = $this->getMockBuilder(
-            '\GuzzleHttp\Psr7\Response'
-        )->disableOriginalConstructor()->setMethods(['getStatusCode', 'getBody'])->getMock();
-        $mockResponse->method('getStatusCode')->willReturn($code);
-        $mockResponse->method('getBody')->willReturn($mockStream);
-
-        $mockException = $this->getMockBuilder(
-            '\GuzzleHttp\Exception\ClientException'
-        )->disableOriginalConstructor()->setMethods(['getResponse'])->getMock();
-        $mockException->method('getResponse')->willReturn($mockResponse);
-
-        return $mockException;
+        $stream = Utils::streamFor(json_encode(['error' => ['message' => $errorMessage]]));
+        $response = new Response($code, [], $stream);
+        return new ClientException($errorMessage, new Request('GET', 'localhost'), $response);
     }
 
-    protected function getMockResponse(array $response) : ResponseInterface
+    protected function getMockResponse(array $response): ResponseInterface
     {
-        $mockStream = $this->getMockBuilder(
-            '\GuzzleHttp\Psr7\Stream'
-        )->disableOriginalConstructor()->setMethods(['getContents'])->getMock();
-        $mockStream->method('getContents')->willReturn(json_encode(['response' => $response], true));
-
-        $mockResponse = $this->getMockBuilder(
-            '\GuzzleHttp\Psr7\Response'
-        )->disableOriginalConstructor()->setMethods(['getBody'])->getMock();
-        $mockResponse->method('getBody')->willReturn($mockStream);
-
-        return $mockResponse;
+        return new Response(200, [], Utils::streamFor(json_encode(['response' => $response])));
     }
 }
