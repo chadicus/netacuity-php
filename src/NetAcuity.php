@@ -3,7 +3,6 @@
 namespace TraderInteractive\NetAcuity;
 
 use TraderInteractive\NetAcuity\Databases\NetAcuityDatabaseInterface;
-use TraderInteractive\Util;
 use Exception;
 
 /**
@@ -61,7 +60,6 @@ final class NetAcuity implements NetAcuityInterface
      */
     public function getGeo(string $ip) : array
     {
-        Util::throwIfNotType(['string' => $ip], true);
         return $this->database->fetch($ip);
     }
 }
