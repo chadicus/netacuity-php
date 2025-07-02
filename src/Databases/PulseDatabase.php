@@ -15,8 +15,7 @@ class PulseDatabase extends AbstractNetAcuityDatabase
         ClientInterface $client,
         string $apiUserToken,
         string $netacuityBaseUrl = self::DEFAULT_NETACUITY_BASE_URL
-    )
-    {
+    ) {
         parent::__construct($client, $apiUserToken, $netacuityBaseUrl);
 
         $this->databaseIdentifier = 26;
