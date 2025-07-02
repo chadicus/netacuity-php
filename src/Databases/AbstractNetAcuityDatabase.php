@@ -2,8 +2,8 @@
 
 namespace TraderInteractive\NetAcuity\Databases;
 
+use TraderInteractive\NetAcuity\Exceptions\NetacuityException;
 use TraderInteractive\Util\Arrays;
-use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
@@ -66,7 +66,7 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
      *
      * @return array The formatted data set.
      *
-     * @throws Exception On failure to send a Guzzle request.
+     * @throws NetacuityException On failure to send a Guzzle request.
      */
     public function fetch(string $ip)
     {
@@ -87,7 +87,7 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
     /**
      * @param ClientException $e The thrown exception for handling.
      *
-     * @throws Exception A formatted exception masking the API User Token in the event that it becomes invalid.
+     * @throws NetacuityException A formatted exception masking the API User Token in the event that it becomes invalid.
      *
      * @return void
      */
@@ -97,13 +97,13 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
         $code = $response->getStatusCode();
 
         if ($code === 403) {
-            throw new Exception('NetAcuity API rejected the provided api user token.', $code);
+            throw new NetacuityException('NetAcuity API rejected the provided api user token.', $code);
         }
 
         $error = json_decode($response->getBody()->getContents(), true);
         $reason = Arrays::getNested($error, 'error.message');
 
-        throw new Exception("NetAcuity API rejected the request, Reason: {$reason}", $code);
+        throw new NetacuityException("NetAcuity API rejected the request, Reason: {$reason}", $code);
     }
 
     /**
