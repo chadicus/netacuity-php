@@ -14,6 +14,12 @@ use GuzzleHttp\Psr7\Request;
 abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
 {
     /**
+     * @var string
+     * @internal
+     */
+    const DEFAULT_NETACUITY_BASE_URL = 'https://usa.cloud.netacuity.com/webservice/query';
+
+    /**
      * @var ClientInterface The GuzzleHttp Client.
      */
     protected $client;
@@ -22,6 +28,11 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
      * @var array The translations array for the data set.
      */
     protected $translations;
+
+    /**
+     * @var string
+     */
+    protected $netacuityBaseUrl;
 
     /**
      * @var string The API User Token.
@@ -36,15 +47,18 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
     /**
      * AbstractNetAcuityDatabase constructor.
      *
-     * @param ClientInterface $client       The injected GuzzleHttp Client.
-     * @param string          $apiUserToken The Net Acuity API User Token.
+     * @param ClientInterface $client           The injected GuzzleHttp Client.
+     * @param string          $apiUserToken     The Net Acuity API User Token.
+     * @param string          $netacuityBaseUrl The base url for the netacuity webservice.
      */
     public function __construct(
         ClientInterface $client,
-        string $apiUserToken
+        string $apiUserToken,
+        string $netacuityBaseUrl
     ) {
         $this->client = $client;
         $this->apiUserToken = $apiUserToken;
+        $this->netacuityBaseUrl = $netacuityBaseUrl;
     }
 
     /**
@@ -117,7 +131,6 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
      */
     protected function buildQuery(string $userToken, string $ip): string
     {
-        $baseUrl = 'https://usa.cloud.netacuity.com/webservice/query';
-        return "{$baseUrl}?u={$userToken}&dbs={$this->databaseIdentifier}&ip={$ip}&json=true";
+        return "{$this->netacuityBaseUrl}?u={$userToken}&dbs={$this->databaseIdentifier}&ip={$ip}&json=true";
     }
 }
