@@ -54,7 +54,7 @@ abstract class AbstractNetAcuityDatabase implements NetAcuityDatabaseInterface
     public function __construct(
         ClientInterface $client,
         string $apiUserToken,
-        string $netacuityBaseUrl
+        string $netacuityBaseUrl = self::DEFAULT_NETACUITY_BASE_URL
     ) {
         $this->client = $client;
         $this->apiUserToken = $apiUserToken;
